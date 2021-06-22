@@ -1,6 +1,6 @@
 * {
-	padding:0;
-	margin:0;
+	padding:0px;
+	margin:0px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -9,6 +9,174 @@
 body {
 	background:#0E6655;
 }
+
+div.cont{
+	max-width: 1000px;
+	display: flex;
+	flex-wrap: wrap;
+	border: 1px solid #ccc;
+	
+}
+
+div#contenedor{
+	max-width: 1250px;
+	flex-wrap: wrap;
+	align-items: center;
+	border: 1px solid #ccc;
+}
+
+#listaAgregar{
+	display: flex;
+	width: 1000px;
+	left:30px;
+	flex-wrap: wrap;
+}
+
+#listaOrdenar{
+	
+}
+
+#listaOrdenar ul{
+	display: flex;
+	border: solid;
+	width: 1000px;
+	left:30px;
+	flex-wrap: wrap;
+}
+
+.sad{
+	background-color: hsl(122, 39%, 49%); /* Green */
+  	border: #011826;
+	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	width: auto;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:1px;
+}
+
+.est{
+	background-color: hsl(122, 39%, 49%); /* Green */
+  	border: #011826;
+	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	width: auto;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:1px;
+}
+
+.ord{
+	background-color: #2E86C1; /* Green */
+  	border: #011826;
+	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	width: auto;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:1px;
+}
+
+.btn-Ingrese{
+	background-color: #4CAF50; /* Green */
+  	border: none;
+	width: 120px;
+  	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	display: inline-block;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:10px;	
+}
+
+.btn-Elimina{
+	background-color: #E74C3C; 
+  	border: none;
+  	color: white;
+	width: 120px;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	display: inline-block;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:10px;	
+}
+
+.btn-Actualizar{
+	background-color: #2E86C1; /* Green */
+  	border: none;
+	width: 120px;
+  	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	display: inline-block;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:10px;	
+}
+
+.btn-Buscar{
+	background-color: #F4D03F; /* Green */
+  	border: none;
+	width: 120px;
+  	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	display: inline-block;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:10px;	
+}
+
+.btn-Guardar{
+	background-color: #839192; /* Green */
+  	border: none;
+	width: 120px;
+  	color: white;
+  	padding: 10px 20px;
+  	text-align: center;
+  	text-decoration: none;	
+  	display: inline-block;
+  	font-size: 16px;
+  	cursor: pointer;
+	margin:10px;	
+}
+input#btn_Cargar{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+
+div#div_file{
+	position: relative;
+	/*margin: 50px;*/
+	padding: 10px;
+	width: 150px;
+	height: 40px;
+	background-color: #0E6655;
+}
+
+p#texto{
+	text-align: center;
+	color:white;
+}
+
 
 .menu_bar {
 	display:none;
@@ -86,7 +254,7 @@ header nav ul li .caret {
 	margin-left:10px;
 	margin-right:0px;
 }
-
+/*
 @media screen and (max-width: 1250px) {
 	body {
 		padding-top:80px;
@@ -149,4 +317,4 @@ header nav ul li .caret {
 	header nav ul li .caret {
 		float: right;
 	}
-}
+}*/
