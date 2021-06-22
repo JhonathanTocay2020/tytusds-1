@@ -22,6 +22,7 @@ function Queue(){
         priorizedItem = index;
       }
     });
+
     return this.dataStore.splice(priorizedItem, 1)[0];
   }
   
@@ -30,8 +31,9 @@ function Queue(){
   }
   
   function print(element){
+    
     this.dataStore.map(function(patient){
-      element.appendChild(patient.node);
+      element.appendChild(patient.node);      
     });
   }
 }
@@ -43,6 +45,11 @@ function Patient(name, priority){
   var div = document.createElement("div");
   div.setAttribute("id", "patient-"+this.name);
   div.appendChild(document.createTextNode(this.name + "\n("+ this.priority+")"));
+  //-----------------------------------------------------
+  let am = {"valor": name,"prioridad": this.priority};
+  axm.push(am);
+  console.log(axm);
+  //-----------------------------------------------------
   this.node =  div;
 }
 
@@ -77,22 +84,97 @@ function attendPatient(queue){
     current.innerHTML="";
 }
 
+//----------------------------------------------------------------
+let  json;
+let t = new Queue();
+axm = [];
+//--------------- Datos JSON ---------------------
+let categoria = "Estructura Lineal";
+let nombre = "Cola_Prioridad";
+let repetir = true;
+let animacion = 0;
+let pos = "INICIO/FIN/ORDENADO";
+//-------------------------------------------------
 
 function main () {
-    var t = new Queue()
+    
 	$('#add-patient').click(function(){
         addPatient(t);
-         
-        
-        
 	});
     $('#attend-patient').click(function(){
-        
         nextPatient(t);
 	});
-   
+    $('.btn-Guardar').click(function(){
+    //alert('Guardar')
+    console.log("Guardar");
+  });
 	// Mostramos y ocultamos submenus
 	$('.submenu').click(function(){
 		$(this).children('.children').slideToggle();
 	});
+}
+//------------------------------------------------------------
+// --------------------- Cargar Datos --------------------- 
+function validarExt(){
+  var input = document.getElementById('btn_Cargar');
+  //------------------------------------------------------
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+  // Aquí guardamos en una variable el resultado de parsear el JSON
+  json = JSON.parse(e.target.result);
+  // --------------------------------------------------------------
+  categoria = json.categoria;
+  nombre = json.nombre;
+  repetir = json.repeticion;
+  animacion = json.animacion;
+  //--------------- Insertar Datos Masivos --------------------------
+  console.log(json.repeticion);
+  //console.log(json.valores);
+  
+  for(index = 0; index < json.valores.length;index++){
+    console.log("Valor: "+json.valores[index].valor);  
+    console.log("Prioridad: " +json.valores[index].prioridad);
+    t.enqueue(new Patient(json.valores[index].valor, Number(json.valores[index].prioridad)));
+  }
+  printPatients(t);
+};
+  reader.readAsText(file);
+}
+
+//------------------------------------------
+// --------------------- Guardar Datos ---------------------
+// escritura(json,'ordenamiento');
+function escritura(data, filename){
+  let file = new Blob([JSON.stringify(data)],{type:'application/json'});
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(file);
+  a.download = `${filename}.json`;
+  a.click()
+}
+
+let objeto;
+// --------------------- Datos ---------------------
+function Datos_json(c,n,r,a,v){
+
+  objeto = {
+    "categoria": c,
+    "nombre": n,
+    "repeticion": r,
+    "animacion": a,
+    "valores": v
+  }
+  console.log(objeto);
+  escritura(objeto,'Cola_Prioridad');
+}
+// ------------------------------------------------------
+//--------------------------------Datos JSON -------------------
+function p_datos(){
+    //----------------------------------------------------
+    if (queue.elementos.length == 0){
+        alert("No se ha ingresado valores");
+    }else{
+        console.log('------------ Valores ------------');
+        Datos_json(categoria,nombre,repetir,animacion,queue.elementos);
+    }            
 }

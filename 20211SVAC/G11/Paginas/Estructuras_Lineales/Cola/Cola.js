@@ -42,9 +42,7 @@ let animacion = 0;
 let pos = "INICIO/FIN/ORDENADO";
 //-------------------------------------------------
 function main () {
-    
-    
-	$('.btn-Ingrese').click(function(){
+    $('.btn-Ingrese').click(function(){
         let porId = document.getElementById("valor");
         queue.encolar(porId.value);
         imprimir();
@@ -71,7 +69,7 @@ function main () {
   });
 
   $('.btn-Guardar').click(function(){
-    alert("Guardar")
+    p_datos()
   });
    
 	// Mostramos y ocultamos submenus
@@ -143,8 +141,8 @@ function validarExt(){
   }else if (json.repeticion == false){
       console.log("-------------------falso---------------------");
       for(index = 0; index<json.valores.length;index++){
-          if(pila.elementos.includes(json.valores[index])== false){
-              pila.push(json.valores[index]);
+          if(queue.elementos.includes(json.valores[index])== false){
+              queue.encolar(json.valores[index]);
               imprimir();
           }
           else{
@@ -154,4 +152,42 @@ function validarExt(){
   }
 };
   reader.readAsText(file);
+}
+//------------------------------------------
+// --------------------- Guardar Datos ---------------------
+// escritura(json,'ordenamiento');
+function escritura(data, filename){
+  let file = new Blob([JSON.stringify(data)],{type:'application/json'});
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(file);
+  a.download = `${filename}.json`;
+  a.click()
+  //console.log(a)
+}
+
+let objeto;
+// --------------------- Datos ---------------------
+function Datos_json(c,n,r,a,v){
+
+  objeto = {
+    "categoria": c,
+    "nombre": n,
+    "repeticion": r,
+    "animacion": a,
+    "valores": v
+  }
+  console.log(objeto);
+  escritura(objeto,'Cola');
+}
+// ------------------------------------------------------
+//--------------------------------Datos JSON -------------------
+function p_datos(){
+    //----------------------------------------------------
+    if (queue.elementos.length == 0){
+        alert("No se ha ingresado valores");
+    }else{
+        console.log('------------ Valores ------------');
+        imprimir();        
+        Datos_json(categoria,nombre,repetir,animacion,queue.elementos);
+    }            
 }
