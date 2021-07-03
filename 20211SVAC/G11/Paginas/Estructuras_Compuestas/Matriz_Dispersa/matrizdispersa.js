@@ -1,3 +1,4 @@
+
 $(document).ready(main);
 
 
@@ -15,6 +16,16 @@ class Nodo {
     }
 }
 
+class Nodo1 {
+    constructor(id, label,with1,style,fillcolor,group) {
+       this.id = id;
+       this.label = label;
+       this.with1 = with1;
+       this.style = style;
+       this.fillcolor = fillcolor;
+       this.group = group;
+    }
+}
 class Lista {
     constructor() {
         this.primero = null;
@@ -263,6 +274,56 @@ class Matriz {
             cabecera = cabecera.siguiente;
         }
     }
+
+    print_mat(){
+        var mat = new Array();
+        var contador = 0;
+        let cabecera = this.lista_horizontal.primero;
+        let aux;
+        while(cabecera != null){
+            aux = cabecera.abajo;
+            while(aux!= null){
+                
+               
+                var nod = new Nodo1(mat.length,aux.valor +"",1.5,"filled","firebrick1",1);
+               
+                mat[mat.length] = nod;
+                aux = aux.abajo;
+            }
+            cabecera = cabecera.siguiente;
+        }
+       console.log(mat);
+       var nodes
+        for (let index = 0; index < mat.length; index++) {
+            var nodes1 = new vis.DataSet([
+               mat[index]
+            ]);
+            nodes = nodes1
+            
+        }
+        
+    
+          // create an array with edges
+          var edges = new vis.DataSet([
+            { from: 1, to: 2 },
+            { from: 2, to: 1 },
+            { from: 2, to: 3 },
+            { from: 3, to: 2 },
+            { from: 3, to: 4 },
+            { from: 4, to: 3 },
+            { from: 4, to: 5 },
+            { from: 5, to: 4 },
+          ]);
+          
+          // create a network
+          var container = document.getElementById("mynetwork");
+          var data = {
+            nodes: nodes,
+            edges: edges,
+          };
+          var options = {};
+          var network = new vis.Network(container, data, options);
+    }
 }
 
 
@@ -272,7 +333,7 @@ let matriz = new Matriz();
 
 function main () {
     
-    
+   
 	$('.btn-Ingrese').click(function(){
         matriz.insertar(0,0,0);
         matriz.insertar(1,1,0);
@@ -288,6 +349,7 @@ function main () {
         matriz.imprimir_horizontal();
         console.log("----------------------");
         matriz.imprimir_vertical();
+        matriz.print_mat();
         // Limpiar input
         
 	});
