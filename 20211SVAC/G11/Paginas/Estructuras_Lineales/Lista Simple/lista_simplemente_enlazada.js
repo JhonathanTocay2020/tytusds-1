@@ -97,7 +97,10 @@ class Lista {
             h1.innerHTML = aux.dato;
             h2.innerHTML = "->";
             capa5.appendChild(h1);
-            capa5.appendChild(h2);
+            if (aux.siguiente != null) {
+                capa5.appendChild(h2);
+            }
+            
             aux = aux.siguiente;
             //_------------------------------------
         }

@@ -108,7 +108,7 @@ function sleep(milliseconds) {
         for (let i = 0; i < mat1.length; i++) {
             for (let j = 0; j < mat1[i].length; j++) {
                 console.log(mat1[i][j])
-                vec[i*tamano.x+j] = mat1[i][j]
+                vec[i*tamano+j] = mat1[i][j]
                 
             }
             
