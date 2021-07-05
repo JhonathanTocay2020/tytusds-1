@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Network</title>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+    ></script>
+    <style type="text/css">
+      #mynetwork {
+        width: 100%;
+        height: 400px;
+        border: 1px solid gray;
+      }
+      #red {
+        width: 600px;
+        height: 400px;
+        border: 1px solid gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Ingrese Nodo:</h3>
+    <input type="text" id="texto"/>
+    
+    <p>
+        <button type="button" onclick="insertar_nodo()">Insertar Nodo</button>
+        <button type="button" onclick="hapusVertex()">Eliminar Nodo</button>
+        <!--<button type="button" onclick="hapusEdge()">Eliminar Arista</button>-->
+        <button type="button" onclick="actualizar()">Actualizar</button>
+        <button type="button" onclick="serch()">Buscar</button>
+        <button type="button" onclick="reco()">Recorrer</button>
+    </p>
+
+    <div>
+        <p> Ingresar Aristas: De: <select id="De"></select> 
+            A:  <select id="A"></select>
+                <button type="button" onclick="insertar_arista()">Ingresar Arista</button>
+        </p>
+        
+        <div id="Recorrido">
+            <h4>Recorrido:</h4>
+            <p id="re"></p>
+        </div>
+                
+        <!--<button type="button" onclick="capturar_de()">De: <p id="de"></p></button>
+        <button type="button" onclick="capturar_a()">A: <p id="a"></p></button>-->
+              
+    </div>
+
+    <p> Ingresar: 
+        Inicio: <select id= "Inicio"></select> 
+        Fin:  <select id= "F"></select>
+            <button type="button" onclick="Grafica_Anchura()">Recorrido</button>
+            <button type="button" onclick="Busqueda_Anchura()">Busqueda</button>
+    </p>
+    
+    <br>
+    
+    <h4>Grafo:</h4>
+    <div id="mynetwork"></div>
+    <h4>Recorrido por Anchura:</h4>
+    <div id="Red_Anchura">
+        <p id = "log"></p>
+    </div>
+    
+    <script type="text/javascript">
+    
+    //----------------------------------------------------
+    let dic = [
+        { id: 1, label: "1" },
+        { id: 2, label: "2" },
+        { id: 3, label: "3" },
+        { id: 4, label: "4" },
+        { id: 5, label: "5" },
+        { id: 6, label: "6" },
+        { id: 7, label: "7" },
+        { id: 8, label: "8" },
+        { id: 9, label: "9" },
+    ];
+    //---------------------------------------------------
+    
+    //----------------------------------------------------
+    let path = [
+            { from: 1, to: 2 },
+            { from: 1, to: 4 },
+            { from: 1, to: 5 },
+            
+            { from: 2, to: 1 },
+            { from: 2, to: 3 },
+            { from: 2, to: 4 },
+            { from: 2, to: 5 },
+            { from: 2, to: 6 },
+
+            { from: 3, to: 2 },
+            { from: 3, to: 5 },
+            { from: 3, to: 6 },
+           
+            { from: 4, to: 1 },
+            { from: 4, to: 2 },
+            { from: 4, to: 5 },
+            { from: 4, to: 7 },
+            { from: 4, to: 8 },
+            
+            { from: 5, to: 1 },
+            { from: 5, to: 2 },
+            { from: 5, to: 3 },
+            { from: 5, to: 4 },
+            { from: 5, to: 6 },
+            { from: 5, to: 7 },
+            { from: 5, to: 8 },
+            { from: 5, to: 9 },
+
+            { from: 6, to: 2 },
+            { from: 6, to: 3 },
+            { from: 6, to: 5 },
+            { from: 6, to: 8 },
+            { from: 6, to: 9 },
+
+            { from: 7, to: 4 },
+            { from: 7, to: 5 },
+            { from: 7, to: 8 },
+            //4, 5, 6 ,7, 9
+            { from: 8, to: 4 },
+            { from: 8, to: 5 },
+            { from: 8, to: 6 },
+            { from: 8, to: 7 },
+            { from: 8, to: 9 },
+            //5, 6 , 8
+            { from: 9, to: 5 },
+            { from: 9, to: 6 },
+            { from: 9, to: 8 },
+    ];
+    
+    //-----------------------------
+    let network;
+    let contador = dic.length;
+    //-----------------------------
+    let nodes,edge;
+    let fr,t;
+    //-----------------------------
+    let pilihNode;
+    let pilihEdge;
+    //-----------------------------
+    
+    Grafo();
+    //-----------------------------------------------------------------------
+    function Grafo(){
+        Llenar();
+        nodes = new vis.DataSet(dic);
+        // Array de Aristas
+        edge = new vis.DataSet(path);
+
+        // Obtener El DIV donde se imprimira el Grafo
+        var container = document.getElementById("mynetwork");
+        var data = {
+            nodes: nodes,
+            edges: edge,
+        };
+
+        var options = {};
+
+        network = new vis.Network(container, data, options);
+        
+        
+        network.on("selectNode",function(params){
+            pilihNode = params["nodes"];
+            console.log(pilihNode);
+        });
+    
+
+        network.on("selectEdge",function(params){
+            pilihEdge = params["edges"];
+        });
+    }
+    //-----------------------------------------------------------------------
+    function Llenar(){
+        var lista1 = document.getElementById("De");
+        var lista2 = document.getElementById("A");
+        var lista3 = document.getElementById("Inicio");
+        var lista4 = document.getElementById("F");
+
+        for( xj in dic){
+            lista1.options[xj] = new Option(dic[xj].label);
+            lista2.options[xj] = new Option(dic[xj].label);
+            lista3.options[xj] = new Option(dic[xj].label);
+            lista4.options[xj] = new Option(dic[xj].label);
+        }
+    }
+    //-------------------------- Insertar Arista --------------------------
+    function insertar_arista(){
+        //-------------------------------------------
+        var m = document.getElementById("De");
+        var z = document.getElementById("A");
+        let xm,xz;
+        //--------------------------------------------
+        console.log("De: "+ m.value + " A:" + z.value);
+        //-------------------------------------------------
+        for(im in dic){
+            if(dic[im].label == m.value){
+                //console.log(dic[im].label);
+                xm = dic[im].id;
+            }
+        }
+
+        for(ic in dic){
+            if(dic[ic].label == z.value){
+                //console.log(dic[im].label);
+                xz = dic[ic].id;
+            }
+        }
+        path.push({from: Number(xm), to: Number(xz)});
+        Grafo();
+    } 
+    //--------------------------- Insertar Nodo -----------------------------
+    function insertar_nodo(){
+        val = document.getElementById("texto");
+
+        if(val.value == ""){
+            alert("La Caja de Texto esta Vacia");
+        }else{
+            contador++;
+            dic.push({id: contador,label:val.value});
+            // Limpiar input
+            val.value ="";
+            val.focus();
+            //-----------------
+            //console.log(dic);
+            Grafo();
+        }        
+    }
+    //-------------------------------------------------------------------------
+    
+      // create an array with nodes
+    
+    
+    // -------------------- Eliminar Vertice
+    function hapusVertex(){
+        nodes.remove(pilihNode);
+        for(im in dic){
+            if(dic[im].id == pilihNode){
+                dic.splice(im,1);
+            }
+        }
+        console.log(dic);
+    }
+
+    function hapusEdge(){
+        edge.remove(pilihEdge);
+    }
+    //-------------------------- Actualizar -------------------
+    function actualizar(){
+        var vl = document.getElementById("texto");
+        if(vl.value ==""){
+            alert("La Caja de Texto esta Vacia")
+        }
+        else{
+            //console.log(vl.value);
+            for(im in dic){
+                if(dic[im].id == pilihNode){
+                        //console.log("si esta: "+dic[im].label);
+                        dic[im].label = vl.value;
+                        // Limpiar
+                        vl.value ="";
+                        vl.focus();
+            
+                }
+            }
+            console.log(dic);
+            Grafo();
+            //_----------------------
+        }
+    }
+    //-------------------------- Recorrer -------------------
+    function reco(){
+        var di = document.getElementById("re");
+        let aux ="";
+        for(am in dic){
+            aux = aux + dic[am].label+","
+            console.log(dic[am]);
+        }
+        di.innerText = aux;        
+    }
+    // ------------------------- Buscar ----------------------
+    function serch(){
+        var vl = document.getElementById("texto");
+        if(vl.value ==""){
+            alert("La Caja de Texto esta Vacia")
+        }
+        else{
+            for(im in dic){
+                if(dic[im].label == vl.value){
+                    alert("Se encontro el Valor: "+dic[im].label +" ID: "+dic[im].id)
+                }
+            }
+        }                
+    }
+//----------------------------------------------------------------------------------------
+    
+    //--------------------------------------------------------------------------------------
+    function Grafica_Anchura(){
+        let auxDic = dic;
+        let auxPath = path;
+        //-----------------------------------------------------------
+        var m = document.getElementById("Inicio");
+        var z = document.getElementById("F");
+        let xm,xz;
+        //--------------------------------------------
+        console.log("De: "+ m.value + " A:" + z.value);
+        //-------------------------------------------------
+        for(im in dic){
+            if(dic[im].label == m.value){
+                xm = dic[im].id;
+            }
+        }
+
+        for(ic in dic){
+            if(dic[ic].label == z.value){
+                xz = dic[ic].id;
+            }
+        }
+        console.log("El Inicio es: " + m.value);
+        console.log("El Fin es:" + z.value);
+
+        //-------------------------------------
+        let visitados=[];
+        let siguientes =[];
+
+        siguientes.push(m.value);
+       
+        while (siguientes.length > 0){
+		    var current = siguientes.shift();
+		    console.log("estamos en: "+current);
+            
+            if (visitados.includes(current)){}
+            else{
+                if (current == z.value) {
+                    console.log("LLegamos");
+                    document.getElementById("log").innerHTML ="";
+                    document.getElementById("log").innerHTML =" ------------- Recorrido por Anchura -------------";
+                    document.getElementById("log").innerHTML +="<br>";
+
+                    for(m in visitados){
+                        document.getElementById("log").innerHTML += visitados[m].concat(" => "); 
+                    }	    
+		    
+			        console.log(visitados);
+                    return;
+		        }
+                visitados.push(current);
+                var temp = successors(current);
+		        siguientes = siguientes.concat(temp);
+            }
+	    }
+    }
+    //-------------------------------------------------------------------------
+
+    //---------------------  Busqueda por Anchura -----------------------------
+    function Busqueda_Profundidad(){
+        document.getElementById("log").innerHTML = "";
+        document.getElementById("log").innerHTML =" ------------- Busqueda por Profundidad -------------";
+        document.getElementById("log").innerHTML +="<br>";
+        var m = document.getElementById("Inicio");
+        var z = document.getElementById("F");
+        let inicio,fin;
+        //--------------------------------------------
+        console.log("De: "+ m.value + " A:" + z.value);
+        //-------------------------------------------------
+        for(im in dic){
+            if(dic[im].label == m.value){
+                inicio = dic[im].id;
+            }
+        }
+
+        for(ic in dic){
+            if(dic[ic].label == z.value){
+                fin = dic[ic].id;
+            }
+        }
+        console.log("El Inicio es: " + inicio);
+        console.log("El Fin es:" + fin);
+        
+        
+        console.log("-------------- Busqueda por anchura --------------");
+        
+        var list = [];
+	    list.push(m.value);
+
+        while (list.length > 0){
+		    var current = list.shift();
+		 
+            console.log("estamos en: " + current);
+            //console.log(dic[current].label);
+            document.getElementById("log").innerHTML+="<br>".concat("Estamos en el Vertice: " +current);
+		    if (current == z.value) {
+                console.log("LLegamos");
+			    document.getElementById("log").innerHTML+="<br>".concat("LLegamos");
+			    return;
+		    }
+		    var temp = successors(current);
+		    console.log(temp);
+            document.getElementById("log").innerHTML+="<br>".concat("Relacion con: " + temp);
+		    list = list.concat(temp);
+		    console.log(list);
+            document.getElementById("log").innerHTML+="<br>".concat("Lista: " +list);
+            document.getElementById("log").innerHTML+="<br>".concat("----------------------------------------------------------------------------------------------");
+	    }
+        console.log("No Se ha encontrado");
+    //------------------------------------------------------------------------------------------
+	while (list.length > 0){
+		var current = list.shift();
+		document.getElementById("log").innerHTML+="<br>".concat(current);
+		if (current == end) {
+			document.getElementById("log").innerHTML+="<br>".concat("GOAL FOUND");
+			return;
+		}
+		var temp = successors(current);
+		temp.reverse();
+		document.getElementById("log").innerHTML+="<br>".concat(temp);
+		list = temp.concat(list);
+		document.getElementById("log").innerHTML+="<br>".concat(list);
+	}
+	document.getElementById("log").innerHTML+="<br>".concat("GOAL NOT FOUND");	
+
+    //-------------------------------------------------------------------------------------------
+    }
+    //---------------------- Encontrar los nodos Hijos --------------------------------
+    function successors(n){
+	    var li = [];
+        var aux;
+        for(inz in dic){
+            if(dic[inz].label == n){
+                aux = dic[inz].id
+                for(lf in path){
+                    if(path[lf].from == aux){
+                        aux2 = path[lf].to
+                        for(al in dic){
+                            if(dic[al].id == aux2){
+                                li.push(dic[al].label);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return li;
+    }
+    
+    </script>
+  </body>
+</html>
