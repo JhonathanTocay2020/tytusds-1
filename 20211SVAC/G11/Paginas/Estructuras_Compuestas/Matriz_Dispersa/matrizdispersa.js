@@ -50,6 +50,7 @@ class Lista {
                     aux.anterior = nodo;
                     return;
                 }
+                return;
             }
         }
         this.ultimo.siguiente = nodo;
@@ -335,17 +336,10 @@ function main () {
     
    
 	$('.btn-Ingrese').click(function(){
-        matriz.insertar(0,0,0);
-        matriz.insertar(1,1,0);
-        matriz.insertar(2,1,1);
-        matriz.insertar(3,2,1);
-        matriz.insertar(4,2,2);
-        matriz.insertar(5,2,3);
-        matriz.insertar(6,2,4);
-        matriz.insertar(7,2,5);
-        matriz.insertar(8,3,1);
-        matriz.insertar(9,5,3);
-        matriz.insertar(10,5,5);
+        var x = document.getElementById("valor").value;     
+        var y = document.getElementById("valor1").value;     
+        var valor = document.getElementById("valor2").value;     
+        matriz.insertar(x,y,valor);
         matriz.imprimir_horizontal();
         console.log("----------------------");
         matriz.imprimir_vertical();
