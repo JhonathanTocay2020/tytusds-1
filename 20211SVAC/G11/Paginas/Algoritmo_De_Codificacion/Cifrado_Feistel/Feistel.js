@@ -43,10 +43,7 @@ function main () {
                 for(ip=0; ip<4;ip++){
                     console.log("----------- Iteracion " + ip + "-----------") 
                     Iteracion();
-                    key();
-                    tblBody.appendChild(hilera4);    
-                    tabla.appendChild(tblBody);
-                    tab.appendChild(tabla);
+                    key();                    
                 }
                 console.log(l.concat(r));
                 //--------------------------------------
