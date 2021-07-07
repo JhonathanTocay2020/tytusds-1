@@ -8,12 +8,14 @@ var tab = document.getElementById("cla");
 var tabla   = document.createElement("table");
 var tblBody = document.createElement("tbody");
 
-
 function main () {    
-    
+    $('.btn-Guardar').click(function(){
+        p_datos()
+      });
 	$('.btn-Ingrese').click(function(){
         var porId = document.getElementById("valor");
         var cl = document.getElementById("clave");
+        var reco = document.getElementById("reco").value;
         //console.log(porId.value);
         var paridad =  porId.value.length%2;
         if (porId.value == ""){
@@ -40,7 +42,7 @@ function main () {
                     //-----------------------------------------------------------------
                 console.log("---------- Prueba ----------")
 
-                for(ip=0; ip<4;ip++){
+                for(ip=0; ip<Number(reco);ip++){
                     console.log("----------- Iteracion " + ip + "-----------") 
                     Iteracion();
                     key();                    
@@ -184,3 +186,99 @@ function key(){
     }
     c = auxX.concat(auxJ);
 }
+//----------------------------------------------------------------
+let  json;
+axm = [];
+//--------------- Datos JSON ---------------------
+let datoJ = "";
+let claveJ = "";
+let rondas = 0;
+let result;
+//-------------------------------------------------
+function validarExt(){
+    var input = document.getElementById('btn_Cargar');
+    //------------------------------------------------------
+    var file = input.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+    // Aquí guardamos en una variable el resultado de parsear el JSON
+    json = JSON.parse(e.target.result);
+    // --------------------------------------------------------------
+    datoJ = json.dato;
+    claveJ = json.clave;
+    rondas = json.rondas;
+    
+    //--------------- Insertar Datos Masivos --------------------------
+    //------------------------------------------------------------------------
+                var tr = datoJ.length/2;
+                var vs = datoJ.length;
+                
+                    
+
+                if(claveJ.length == tr){
+                    l = datoJ.substring(0,tr);
+                    r = datoJ.substring(tr,vs);
+                    c = claveJ;
+                    //-----------------------------------------------------------------
+                console.log("---------- Prueba ----------")
+
+                for(ip=0; ip<Number(rondas);ip++){
+                    console.log("----------- Iteracion " + ip + "-----------") 
+                    Iteracion();
+                    key();                    
+                }
+                console.log(l.concat(r));
+                //--------------------------------------
+                var hileraF = document.createElement("tr");
+                var celdaF1 = document.createElement("td");
+                var celdaF2 = document.createElement("td");
+//--------------------------------------------------------------------------
+                var textoCeldaF1 = document.createTextNode(l);
+                var textoCeldaF2 = document.createTextNode(r);
+                result = l.concat(r);
+                celdaF1.appendChild(textoCeldaF1);
+                hileraF.appendChild(celdaF1);
+                celdaF2.appendChild(textoCeldaF2);
+                hileraF.appendChild(celdaF2);
+//--------------------------------------------------------------------------
+                tblBody.appendChild(hileraF);    
+                tabla.appendChild(tblBody);
+                tab.appendChild(tabla);
+            }
+    //-----------------------------------------------------------------------
+    //------------------------------------------------------------------
+    
+  };
+    reader.readAsText(file);
+  }
+
+  //------------------------------------------
+  // --------------------- Guardar Datos ---------------------
+  // escritura(json,'ordenamiento');
+  function escritura(data, filename){
+    let file = new Blob([JSON.stringify(data)],{type:'application/json'});
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(file);
+    a.download = `${filename}.json`;
+    a.click()
+    //console.log(a)
+  }
+  
+  let objeto;
+  // --------------------- Datos ---------------------
+  function Datos_json(c,n,r,a){
+  
+    objeto = {
+      "dato": c,
+      "clave": n,
+      "rondas": r,
+      "cifrado": a      
+    }
+    console.log(objeto);
+    escritura(objeto,'Feistel');
+  }
+  // ------------------------------------------------------
+  //--------------------------------Datos JSON -------------------
+  function p_datos(){
+      Datos_json(datoJ,claveJ,rondas,result);            
+  }

@@ -206,7 +206,7 @@ function main () {
 	});
 
     $('.btn-Guardar').click(function(){
-        nuevo.p_datos();
+        //p_datos();
 	});
    
 	// Mostramos y ocultamos submenus
@@ -215,6 +215,15 @@ function main () {
 	});
 }
 
+//----------------------------------------------------------------
+let  json;
+//--------------- Datos JSON ---------------------
+let categoria = "Estructura Compuesta";
+let nombre = "Row/Column Major";
+let animacion = 0;
+let tamaño;
+
+//-------------------------------------------------
 // --------------------- Cargar Datos --------------------- 
 function validarExt(){
     var input = document.getElementById('btn_Cargar');
@@ -227,39 +236,20 @@ function validarExt(){
     categoria = json.categoria;
     nombre = json.nombre;
     animacion = json.animacion;
-    pos = json.posicion;
+    tamaño = json.m;
+    valor = json.valores;
+    crear(tamaño[0],tamaño[1]);
+    matiz = new MatrizRow(tamaño[0],tamaño[1],animacion);
+    //imprimirt(matiz);
     //--------------- Insertar Datos Masivos --------------------------
-    
-    
-    //for(index = 0; index<json.valores.length;index++){
-    //    axm.push(json.valores[index]);
-    //}
-
-    if (json.repeticion == true){
-        console.log('Verdader');
-        for(index = 0; index<json.valores.length;index++){
-            nuevo.add(json.valores[index]);
-            nuevo.print();
-        }
-        //Datos_json(json.categoria,json.nombre,json.repeticion,json.animacion,json.posicion,json.valores);
-    }else if (json.repeticion == false){
-        console.log("-------------------falso---------------------");
-        for(index = 0; index<json.valores.length;index++){
-            if(axm.includes(json.valores[index])== false){
-                axm.push(json.valores[index]);
-                nuevo.add(json.valores[index]);
-                nuevo.print();
-            }
-            else{
-                console.log(json.valores[index])
-            }
-        }
-        //for(let xm = 0; xm < axm.length;xm++){
-
-        //}
-        //Datos_json();
+    for(index = 0; index<json.valores.length;index++){
+        insertar(Number(valor[index].indices[0]), Number(valor[index].indices[1]), valor[index].valor);
+        console.log(valor[index].indices[0]);
+        console.log(valor[index].indices[1]);
+        console.log(valor[index].valor);
     }
+    imprimirt(matiz);
+    imprimir(matiz); 
   };
-  console.log(nuevo);
   reader.readAsText(file);
 }

@@ -179,7 +179,20 @@ class Hash {
     }
   }
 }
+//----------------------------------------------------------------
+let  json;
 let hash;
+axm = [];
+//--------------- Datos JSON ---------------------
+let categoria = "Estructura No Lineal";
+let nombre = "Tabla Hash Abierta";
+let tamaño =0;
+let minimo = 0;
+let maximo = 0;
+let funcion = "Simple/Division/Multiplicacion";
+let prueba = "Lineal/Cuadratica/Doble";
+let animacion = 0;
+//-------------------------------------------------
 function main () {
     
    
@@ -438,3 +451,84 @@ class Lista {
   }
   //--------------------------------------------------------------------------------
 }
+
+
+
+//--------------------------------------------------------------------------------------
+// --------------------- Cargar Datos --------------------- 
+function validarExt(){
+  var input = document.getElementById('btn_Cargar');
+  //------------------------------------------------------
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+  // Aquí guardamos en una variable el resultado de parsear el JSON
+  json = JSON.parse(e.target.result);
+  // --------------------------------------------------------------
+  categoria = json.categoria;
+  nombre = json.nombre;
+  tamaño = json.m;
+  
+  minimo = json.minimo;
+  maximo = json.maximo;
+  funcion = json.funcion;
+  prueba = json.prueba;
+  animacion = json.animacion;
+  //_------------------------------------------
+    hash = new Hash(tamaño);
+    alert("Tabla Creada Correctamente");
+    refresh();
+      hash.show();
+  //--------------- Crear Tabla
+  //--------------- Insertar Datos Masivos --------------------------
+  for(index = 0; index<json.valores.length;index++){
+      //console.log(json.valores[index]);
+      hash.insert(json.valores[index], json.valores[index]);  
+                
+  }
+  refresh();
+  hash.show();
+};
+  reader.readAsText(file);
+}
+// --------------------- Guardar Datos ---------------------
+// escritura(json,'ordenamiento');
+function escritura(data, filename){
+  let file = new Blob([JSON.stringify(data)],{type:'application/json'});
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(file);
+  a.download = `${filename}.json`;
+  a.click()
+}
+
+let objeto;
+// --------------------- Datos ---------------------
+function Datos_json(c,n,m,min,max,f,p,a,v){
+
+  objeto = {
+    "categoria": c,
+    "nombre": n,
+    "m": m,
+    "minimo": min,
+    "maximo": max,
+    "funcion": f,
+    "prueba": p,
+    "animacion": a,
+    "valores": v,
+  }
+  console.log(objeto);
+  escritura(objeto,'Tabla_Hash_Abierta');
+}
+// ------------------------------------------------------
+//--------------------------------Datos JSON -------------------
+function p_datos(){
+    //----------------------------------------------------
+    if (hash.elementos.length == 0){
+        alert("No se ha ingresado valores");
+    }else{
+        console.log('------------ Valores ------------');
+        imprimir();        
+        Datos_json(categoria,nombre,repetir,animacion,pila.elementos);
+    }            
+}
+//--------------------------------------------------------------------------------------
